@@ -2,7 +2,7 @@
 
 ### 1. Project Overview
 
-This is an interactive event landing page prototype for Cape Town Food Fest, built dynamically using Vue 3. It showcases upcoming ticket tiers (Bronze, Silver, Gold), structurally highlights a designated featured product tier, tracks user selection metrics through an integrated favorite bookmark counter, and handles sorting pipelines.
+This is an interactive event landing page prototype for Cape Town Food Fest, built dynamically using Vue 3. It showcases upcoming ticket tiers (Bronze, Silver, Gold), structurally highlights a designated featured product tier, tracks user selection metrics through an integrated favorite bookmark counter, handles sorting pipelines, and supports dark mode customization.
 
 ### 2. Key Features Implemented
 
@@ -10,7 +10,8 @@ This is an interactive event landing page prototype for Cape Town Food Fest, bui
 - Distinct styling configurations for highlighted "Featured" tiers
 - Global bookmark calculation tracking counters via Vue arrays
 - Live client-side array price sorting transformations _(Stretch Goal)_
-- Call-to-action warning response handlers (_Stretch Goal_)
+- Call-to-action warning response handlers _(Stretch Goal)_
+- Interactive dark/light mode custom styling system toggle _(Stretch Goal)_
 
 ### 3. Installation and Run Instructions
 

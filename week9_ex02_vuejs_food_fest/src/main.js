@@ -5,6 +5,7 @@ createApp({
     return {
       sortBy: "default",
       favorites: [],
+      darkMode: false,
       ticketTiers: [
         {
           id: "bronze",
@@ -51,7 +52,6 @@ createApp({
   },
   computed: {
     sortedTiers() {
-      // Create a shallow copy array to avoid changing core reference ordering directly
       const tiersCopy = [...this.ticketTiers];
       if (this.sortBy === "low-high") {
         return tiersCopy.sort((a, b) => a.price - b.price);
