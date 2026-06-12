@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homes & Beyond - Property Listings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body class="bg-light">
+    <div id="app">
+      <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <a class="navbar-brand fw-bold" href="#">🏡 Homes & Beyond</a>
+          <span class="badge bg-danger fs-6 px-3 py-2">💖 Wishlist: {{ wishlist.length }}</span>
+        </div>
+      </nav>
+
+      <main class="container mt-4">
+        <div class="row g-3 bg-white p-3 rounded shadow-sm align-items-center mb-4 mx-0">
+          <div class="col-md-6">
+            <label class="form-label small fw-bold text-uppercase text-muted mb-1">Search Property Listings</label>
+            <input v-model="searchQuery" type="text" class="form-control" placeholder="Search by title or location..." />
+          </div>
+          <div class="col-md-6 d-flex justify-content-md-end">
+            <div style="min-width: 220px">
+              <label class="form-label small fw-bold text-uppercase text-muted mb-1">Sort By Price</label>
+              <select v-model="sortBy" class="form-select">
+                <option value="default">Default Ordering</option>
+                <option value="low-high">Price: Low to High</option>
+                <option value="high-low">Price: High to Low</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="filteredProperties.length > 0" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          <div class="col" v-for="property in filteredProperties" :key="property.id">
+            <div class="card h-100 shadow-sm border-0">
+              <img :src="property.image" class="card-img-top object-fit-cover" style="height: 220px" />
+              <div class="card-body">
+                <span class="badge bg-secondary mb-2">{{ property.type }}</span>
+                <h5 class="card-title fw-bold mb-1">{{ property.title }}</h5>
+                <p class="text-muted small mb-3">📍 {{ property.location }}</p>
+                <div class="d-flex gap-3 mb-3 text-secondary small">
+                  <span>🛏 {{ property.beds }} Beds</span>
+                  <span>🛁 {{ property.baths }} Baths</span>
+                </div>
+                <h4 class="text-primary fw-bold mb-0">{{ formatPrice(property.price) }}</h4>
+              </div>
+              <div class="card-footer bg-transparent border-0 p-3">
+                <button
+                  @click="toggleBookmark(property.id)"
+                  class="btn w-100"
+                  :class="wishlist.includes(property.id) ? 'btn-danger' : 'btn-outline-danger'"
+                >
+                  {{ wishlist.includes(property.id) ? '❤️ Bookmarked' : '🤍 Add to Wishlist' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="text-center py-5">
+          <h3 class="text-muted">No properties match your search parameters.</h3>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const { createApp } = Vue;
+      createApp({
+        data() {
+          return {
+            searchQuery: "",
+            sortBy: "default",
+            wishlist: [],
+            properties: [
+              {
+                id: 1,
+                title: "Modern Luxury Villa",
+                location: "Camps Bay, Cape Town",
+                price: 14500000,
+                image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=600&auto=format&fit=crop",
+                beds: 5,
+                baths: 4,
+                type: "House",
+              },
+              {
+                id: 2,
+                title: "Chic Atlantic Apartment",
+                location: "Green Point, Cape Town",
+                price: 4200000,
+                image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=600&auto=format&fit=crop",
+                beds: 2,
+                baths: 2,
+                type: "Apartment",
+              },
+              {
+                id: 3,
+                title: "Contemporary Penthouse",
+                location: "Sea Point, Cape Town",
+                price: 9500000,
+                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=600&auto=format&fit=crop",
+                beds: 3,
+                baths: 3,
+                type: "Penthouse",
+              },
+            ],
+          };
+        },
+        computed: {
+          filteredProperties() {
+            let result = [...this.properties];
+            if (this.searchQuery.trim() !== "") {
+              const query = this.searchQuery.toLowerCase();
+              result = result.filter((p) => p.title.toLowerCase().includes(query) || p.location.toLowerCase().includes(query));
+            }
+            if (this.sortBy === "low-high") result.sort((a, b) => a.price - b.price);
+            else if (this.sortBy === "high-low") result.sort((a, b) => b.price - a.price);
+            return result;
+          },
+        },
+        methods: {
+          toggleBookmark(id) {
+            if (this.wishlist.includes(id)) this.wishlist = this.wishlist.filter((item) => item !== id);
+            else this.wishlist.push(id);
+          },
+          formatPrice(val) {
+            return new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR", minimumFractionDigits: 0 }).format(val);
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
